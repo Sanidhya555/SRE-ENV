@@ -1,4 +1,3 @@
-# ── Shared dependency map (same for all tasks) ──────────────────
 DEPS = {
     "api-gateway":          ["auth-service", "order-service", "payment-service"],
     "auth-service":         ["db-primary"],
@@ -8,7 +7,6 @@ DEPS = {
     "notification-service": [],
 }
 
-# ── TASK 1 — Easy: Memory Leak ───────────────────────────────────
 TASK1 = {
     "description": (
         "INCIDENT ALERT: order-service is repeatedly crashing and restarting. "
@@ -97,7 +95,6 @@ TASK1 = {
     },
 }
 
-# ── TASK 2 — Medium: Cascading Failure ──────────────────────────
 TASK2 = {
     "description": (
         "INCIDENT ALERT: Customers reporting checkout is extremely slow — "
@@ -192,7 +189,6 @@ TASK2 = {
     },
 }
 
-# ── TASK 3 — Hard: Red Herring Storm ────────────────────────────
 TASK3 = {
     "description": (
         "INCIDENT ALERT: Multiple simultaneous alerts. "
@@ -301,7 +297,6 @@ TASK3 = {
     },
 }
 
-# ── Final export ─────────────────────────────────────────────────
 INCIDENTS = {
     1: TASK1,
     2: TASK2,

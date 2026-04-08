@@ -8,7 +8,6 @@ from models import SREState, SREAction
 def step_reward(state: SREState, action: SREAction, action_result: dict) -> float:
     reward = 0.0
 
-    # Redundancy penalty
     cache_key = f"{action.action_type}:{action.service_name}"
     if cache_key in state.query_cache and action.action_type != "close_incident":
         state.redundant_queries += 1
@@ -17,12 +16,10 @@ def step_reward(state: SREState, action: SREAction, action_result: dict) -> floa
     if action.action_type != "close_incident":
         state.query_cache.append(cache_key)
 
-    # Destructive action penalty
     if action_result.get("destructive", False):
         state.destructive_actions += 1
         return -0.20
 
-    # +0.10 investigated the alerting service
     alerting = {1: "order-service", 2: "api-gateway", 3: "api-gateway"}
     if (
         not state.identified_alerting_service
@@ -32,7 +29,6 @@ def step_reward(state: SREState, action: SREAction, action_result: dict) -> floa
         state.identified_alerting_service = True
         reward += 0.10
 
-    # +0.15 narrowed to root cause service
     if (
         not state.narrowed_root_cause_service
         and action.action_type in ("query_logs", "query_metrics", "check_deps")
@@ -41,7 +37,6 @@ def step_reward(state: SREState, action: SREAction, action_result: dict) -> floa
         state.narrowed_root_cause_service = True
         reward += 0.15
 
-    # +0.20 identified root cause category
     if (
         not state.correct_root_cause_category
         and action_result.get("reveals_category") == state.root_cause_category
@@ -50,7 +45,6 @@ def step_reward(state: SREState, action: SREAction, action_result: dict) -> floa
         state.correct_root_cause_category = True
         reward += 0.20
 
-    # +0.25 identified specific root cause
     if (
         not state.correct_root_cause_specific
         and action_result.get("reveals_specific") == state.root_cause_specific
@@ -59,7 +53,6 @@ def step_reward(state: SREState, action: SREAction, action_result: dict) -> floa
         state.correct_root_cause_specific = True
         reward += 0.25
 
-    # +0.20 correct fix applied
     if (
         not state.correct_fix_applied
         and action.action_type == "apply_fix"

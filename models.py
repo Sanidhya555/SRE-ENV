@@ -1,7 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
 
-
 class SREAction(BaseModel):
     action_type: str = Field(..., description="query_logs | query_metrics | check_deps | apply_fix | close_incident")
     service_name: Optional[str] = Field(None)
@@ -9,13 +8,11 @@ class SREAction(BaseModel):
     fix_type: Optional[str] = Field(None)
     resolution_summary: Optional[str] = Field(None)
 
-
 class Alert(BaseModel):
     service: str
     metric: str
     severity: str
     message: str
-
 
 class SREObservation(BaseModel):
     active_alerts: list[Alert] = Field(default_factory=list)
@@ -27,7 +24,6 @@ class SREObservation(BaseModel):
     step_count: int = Field(0)
     done: bool = Field(False)
     task_description: str = Field("")
-
 
 class SREState(BaseModel):
     episode_id: str

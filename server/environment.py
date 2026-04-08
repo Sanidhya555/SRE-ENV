@@ -96,8 +96,6 @@ class SREEnvironment:
             raise RuntimeError("Call reset() first.")
         return self._state
 
-    # ── Private helpers ──────────────────────────────────────────
-
     def _execute_action(self, action: SREAction, incident: dict):
         atype   = action.action_type
         service = action.service_name or ""

@@ -1,9 +1,10 @@
-name: sre_env
+name: sre-incident-response
 version: "1.0.0"
 description: >
-  SRE Incident Response Environment — an OpenEnv-spec training ground
+  SRE Incident Response Environment — an OpenEnv-spec RL training ground
   where an AI agent practices diagnosing and fixing production incidents
   in a simulated 6-service microservices company.
+
 author: openenv-community
 tags:
   - openenv
@@ -12,32 +13,52 @@ tags:
   - devops
   - real-world
 
-environment:
-  reset_endpoint:   /reset
-  step_endpoint:    /step
-  state_endpoint:   /state
-  ws_endpoint:      /ws
-  health_endpoint:  /health
+endpoints:
+  health:   GET  /health
+  reset:    POST /reset
+  step:     POST /step
+  state:    GET  /state
+  tasks:    GET  /tasks
+  grader:   GET  /grader
+  baseline: POST /baseline
+  ws:       WS   /ws
 
-  action_type:      SREAction
-  observation_type: SREObservation
-  state_type:       SREState
+models:
+  action:      SREAction
+  observation: SREObservation
+  state:       SREState
+
+action_space:
+  type: discrete
+  fields:
+    action_type:
+      required: true
+      options: [query_logs, query_metrics, check_deps, apply_fix, close_incident]
+    service_name:
+      required: false
+      options: [api-gateway, auth-service, order-service, payment-service, db-primary, notification-service]
+    metric_name:
+      required: false
+      options: [cpu, memory, latency, error_rate, connections]
+    fix_type:
+      required: false
+      options: [restart, rollback_deployment, increase_memory, disable_feature_flag, scale_up, clear_cache]
+    resolution_summary:
+      required: false
 
 tasks:
   - id: 1
     name: memory_leak
     difficulty: easy
-    description: "order-service repeatedly crashing due to OOM memory leak"
-
+    expected_score: 0.70
   - id: 2
     name: cascading_failure
     difficulty: medium
-    description: "Slow checkout caused by a bad DB query in a recent deployment"
-
+    expected_score: 0.40
   - id: 3
     name: red_herring_storm
     difficulty: hard
-    description: "Multiple simultaneous alerts — 2 fake, 1 real hidden feature flag issue"
+    expected_score: 0.15
 
 reward:
   min: 0.0
