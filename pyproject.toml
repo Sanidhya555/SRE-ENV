@@ -11,17 +11,21 @@ requires-python = ">=3.10"
 license = {text = "BSD-3-Clause"}
 
 dependencies = [
-    "fastapi>=0.104.0",
-    "uvicorn>=0.24.0",
-    "pydantic>=2.0.0",
-    "requests>=2.25.0",
-    "openai>=1.0.0",
-    "websockets>=12.0",
-    "python-multipart>=0.0.6",
+"fastapi>=0.104.0",
+"uvicorn>=0.24.0",
+"pydantic>=2.0.0",
+"requests>=2.25.0",
+"openai>=1.0.0",
+"websockets>=12.0",
+"python-multipart>=0.0.6",
+"openenv>=0.2.0"
 ]
 
 [project.optional-dependencies]
 dev = ["pytest", "httpx"]
+
+[project.scripts]
+server = "inference:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

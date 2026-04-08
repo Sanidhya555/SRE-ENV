@@ -188,7 +188,9 @@ def print_results(results: list[dict]) -> None:
     print("━" * 55 + "\n")
 
 
-if __name__ == "__main__":
+def main():
+    import argparse
+
     parser = argparse.ArgumentParser(
         description="SRE Environment Inference Script"
     )
@@ -214,3 +216,7 @@ if __name__ == "__main__":
         results = run_rule_based()
 
     print_results(results)
+
+
+if __name__ == "__main__":
+    main()
