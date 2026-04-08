@@ -25,7 +25,7 @@ dependencies = [
 dev = ["pytest", "httpx"]
 
 [project.scripts]
-server = "inference:main"
+server = "server.app:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
