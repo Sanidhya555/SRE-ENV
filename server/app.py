@@ -36,6 +36,10 @@ class StepRequest(BaseModel):
     resolution_summary: Optional[str] = None
 
 
+@app.get("/")
+def root():
+    return {"message": "SRE Environment API is running"}
+
 @app.get("/health")
 def health():
     return {"status": "ok", "environment": "sre_env", "version": "1.0.0"}
